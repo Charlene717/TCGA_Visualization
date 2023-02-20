@@ -22,9 +22,8 @@ SetImport_PhenoFileName <- "TCGA-PAAD.GDC_phenotype.tsv"
 
 
 ##### Conditions setting* #####
-
-Set_Target_geneset <-
-
+Set_Target_geneset1 <- c("ARHGEF10L","RNF10","RNF11","RNF13","GTF2IP1","REM1","TSKS","ASS1")
+Set_Target_geneset2 <- c("NCBP2","DISC1","RNF115","RNF112","SPN","DHX8","TCOF1","LRRTM3","NUP98")
 
 ##### Export setting* #####
 Set_Export_Name1 <- "TCGA"
@@ -42,7 +41,7 @@ GeneExp.df <- read.table(paste0(SetImportPath_FOL,"/",SetImport_RNAFileName),
 colnames(GeneExp.df) <-  gsub("\\.", "-", colnames(GeneExp.df))
 
 ## Import Metadata
-Pheno.df <- read.delim(paste0(SetImportPath_FOL,"/",PhenoFileName), header=T,  sep="\t") # row.names = 1,
+Pheno.df <- read.delim(paste0(SetImportPath_FOL,"/",SetImport_PhenoFileName), header=T,  sep="\t") # row.names = 1,
 
 
 ##### Data preprocessing #####
