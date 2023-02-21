@@ -123,7 +123,12 @@ Heatmap(COR_Rvalue.df,
 
 
 ## TSV
-
+write.table(data.frame(Rvalue=row.names(COR_Rvalue.df),COR_Rvalue.df),
+            file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_COR_Rvalue.tsv"),
+            sep="\t", row.names= F, quote = FALSE)
+write.table(data.frame(Pvalue=row.names(COR_Pvalue.df), COR_Pvalue.df),
+            file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_COR_Pvalue.tsv"),
+            sep="\t", row.names= F, quote = FALSE)
 
 
 #### Save RData ####
