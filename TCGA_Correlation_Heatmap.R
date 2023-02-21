@@ -49,7 +49,7 @@ Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", 
 ##### Export setting* #####
 Set_Export_Name1 <- "TCGA"
 Set_Export_Name2 <- "PAAD"
-Set_Export_Name3 <- "PT"
+Set_Export_Name3 <- "PT_Grp1"
 
 Result_Folder_Name <- paste0("Result_",Sys.Date(),"_",Set_Export_Name1,"_",Set_Export_Name2,"_",Set_Export_Name3) ## Generate output folder automatically
 dir.create(Result_Folder_Name)
@@ -198,7 +198,7 @@ ggplot(df, aes(x = Gene2, y = Gene1, size = log10P, fill = R)) +
   labs(size = "-log10Pvalue", fill = "R value")+
   theme(axis.text.x = element_text(angle = 45, hjust = 0.9)) -> Plt.Dot
   # labs(title = "Bubble Plot", x = "Column", y = "Row", size = "P value", fill = "R value")
-Plt.Dot
+Plt.Dot+labs(x=NULL, y=NULL)
 
 
 #### Export Result ####
@@ -216,7 +216,7 @@ pdf(
   file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_DotPlot.pdf"),
   width = 12,  height = 10
 )
-Plt.Dot
+Plt.Dot+labs(x=NULL, y=NULL)
 Plt.Barplot1
 dev.off()
 ## TSV
