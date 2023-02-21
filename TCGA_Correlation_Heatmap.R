@@ -5,7 +5,7 @@ memory.limit(150000)
 ##### Load Packages #####
 source("FUN_Package_InstLoad.R")
 PKG_Basic.set <- c("tidyverse","circlize")
-PKG_BiocManager.set <- c("ComplexHeatmap")
+PKG_BiocManager.set <- c("ComplexHeatmap","limma")
 
 FUN_Package_InstLoad(Basic.set = PKG_Basic.set, BiocManager.set = PKG_BiocManager.set)
 
@@ -15,8 +15,6 @@ library("ggpubr")
 
 ##### Function setting #####
 source("FUN_Beautify_ggplot.R")
-source("FUN_ggPlot_vline.R")
-
 
 ##### Import setting* #####
 SetImportPath_FOL <- "Input_TCGA_PAAD"  # Input Folder Name
@@ -26,8 +24,25 @@ SetImport_PhenoFileName <- "TCGA.PAAD.sampleMap_PAAD_clinicalMatrix"
 
 
 ##### Conditions setting* #####
-Set_Target_geneset1 <- c("ARHGEF10L","RNF10","RNF11","RNF13","GTF2IP1","REM1","TSKS","ASS1")
-Set_Target_geneset2 <- c("NCBP2","DISC1","RNF115","RNF112","SPN","DHX8","TCOF1","LRRTM3","NUP98")
+# Set_Target_geneset1 <- c("ARHGEF10L","RNF10","RNF11","RNF13","GTF2IP1","REM1","TSKS","ASS1")
+Set_Target_geneset1 <- c("FN1", "MTDH", "CDH17", "VTN", "SPP1", "FGA", "FGB", "FGG","COL1A1", "COL1A2",
+                         "COL4A1-A6", "COL4A1", "COL4A2", "COL4A3", "COL4A4", "COL4A5", "COL4A6",
+                         "COL5A1", "COL5A2", "COL5A3",
+                         "LAMA1-A5", "LAMA1", "LAMA2", "LAMA3", "LAMA4", "LAMA5",
+                         "LAMB1-B4", "LAMB1", "LAMB2", "LAMB3", "LAMB4",
+                         "LAMC1-C3", "LAMC1", "LAMC2", "LAMC3", "AATK"
+                         )
+Set_Target_geneset1 <- alias2Symbol(Set_Target_geneset1, species = "Hs", expand.symbols = FALSE)
+
+
+# Set_Target_geneset2 <- c("NCBP2","DISC1","RNF115","RNF112","SPN","DHX8","TCOF1","LRRTM3","NUP98")
+Set_Target_geneset2 <- c("ITGA5", "ITGAV", "ITGA8", "ITGB1", "ITGB3", "ITGB5", "ITGB6", "ITGB8", "ITGA2B",
+                         "ITGA1", "ITGA2", "ITGA10", "ITGA11",
+                         "ITGA9", "ITGA4", "ITGB7", "ITGAE", "ITGAM", "ITGB2", "ITGAL", "ITGAD", "ITGAX",
+                         "ITGA3", "ITGA6", "ITGA7", "ITGB4")
+Set_Target_geneset2 <- alias2Symbol(Set_Target_geneset2, species = "Hs", expand.symbols = FALSE)
+
+
 Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"))
 
 
@@ -56,8 +71,8 @@ Plt.Barplot <- ggplot(Pheno.df, aes(x=as.factor(Pheno.df[,"sample_type"]), fill=
 Plt.Barplot
 
 Plt.Barplot + labs(fill="sample_type", x="sample_type", y = "count")+
-  theme_classic() %>% FUN_BeautifyggPlot(AxisTitleSize=2,LegPos = c(0.82, 0.85))+
-  theme(axis.text.x = element_text(angle = 0, hjust = 0.65, vjust = 0.7)) -> Plt.Barplot1
+  theme_classic() %>% FUN_BeautifyggPlot(AxisTitleSize=2,LegPos = c(0.82, 0.85), OL_Thick = 1.5)+
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.65, vjust = 0.7),) -> Plt.Barplot1
 Plt.Barplot1
 
 
@@ -169,18 +184,22 @@ colnames(R_df_long)[1:2] <-c("Gene1","Gene2")
 df <- merge(P_df_long, R_df_long)
 
 df$R <- df$R %>% as.numeric()
+
+df$Gene1  <- factor(df$Gene1, levels=Set_Target_geneset2)
+df$Gene2  <- factor(df$Gene2, levels=Set_Target_geneset1)
+
 # 繪製氣泡圖
-ggplot(df, aes(x = Gene1, y = Gene2, size = log10P, fill = R)) +
+ggplot(df, aes(x = Gene2, y = Gene1, size = log10P, fill = R)) +
   geom_point(shape = 21) +
   scale_fill_gradientn(colours = c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"),
                        #values = c(-1,-0.5, 0, 0.5, 1),
                        limits = c(-1, 1)) +
   scale_size_continuous(range = c(2, 10)) +
-  labs(size = "-log10Pvalue", fill = "R value") -> Plt.Dot
+  labs(size = "-log10Pvalue", fill = "R value")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.9)) -> Plt.Dot
   # labs(title = "Bubble Plot", x = "Column", y = "Row", size = "P value", fill = "R value")
 Plt.Dot
 
-Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"))
 
 #### Export Result ####
 ## PDF
@@ -193,7 +212,13 @@ Plt.Heatmap
 Plt.Barplot1
 dev.off()
 
-
+pdf(
+  file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_DotPlot.pdf"),
+  width = 12,  height = 10
+)
+Plt.Dot
+Plt.Barplot1
+dev.off()
 ## TSV
 write.table(data.frame(Rvalue=row.names(COR_Rvalue.df),COR_Rvalue.df),
             file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_COR_Rvalue.tsv"),
