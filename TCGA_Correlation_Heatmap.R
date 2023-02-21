@@ -22,7 +22,7 @@ source("FUN_ggPlot_vline.R")
 SetImportPath_FOL <- "Input_TCGA_PAAD"  # Input Folder Name
 SetImport_RNAFileName <- "TCGA_PAAD_HiSeqV2" # RNAFileName <- "TCGA_PAAD_HiSeqV2"
 # SetImport_CNVFileName <- "TCGA_Gistic2_CopyNumber_Gistic2_all_data_by_genes"
-SetImport_PhenoFileName <- "TCGA-PAAD.GDC_phenotype.tsv"
+SetImport_PhenoFileName <- "TCGA.PAAD.sampleMap_PAAD_clinicalMatrix"
 
 
 ##### Conditions setting* #####
@@ -50,8 +50,9 @@ Pheno.df <- read.delim(paste0(SetImportPath_FOL,"/",SetImport_PhenoFileName), he
 
 ##### Data preprocessing #####
 ## Extract Primary tumor
-
-
+PT.set <- Pheno.df[Pheno.df$sample_type == "Primary Tumor" ,]$sampleID
+GeneExp_Ori.df <- GeneExp.df
+GeneExp.df <- GeneExp.df[,colnames(GeneExp.df) %in% PT.set]
 
 ##### Correlation analysis #####
 ## Ref: http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
