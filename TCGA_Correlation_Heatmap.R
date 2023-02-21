@@ -114,12 +114,19 @@ Heatmap(COR_Rvalue.df,
         name = "Correlation", #title of legend
         column_title = "Variables", row_title = "Samples",
         # row_names_gp = gpar(fontsize = 7) # Text size for row names
-)
+) -> Plt.Heatmap
 
+Plt.Heatmap
 
 
 #### Export Result ####
 ## PDF
+pdf(
+  file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_Heatmap.pdf"),
+  width = 10,  height = 8
+)
+Plt.Heatmap
+dev.off()
 
 
 ## TSV
