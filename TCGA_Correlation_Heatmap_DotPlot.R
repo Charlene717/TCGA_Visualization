@@ -1,3 +1,12 @@
+##### To-Do List ######
+# - [ ] Beautify the Figures
+# - [ ] Cluster Bubble Plot
+# - [ ] Organize annotations
+# - [ ] For loop -> apply function
+# - [ ] Clean up the code
+
+
+
 ##### Presetting ######
 rm(list = ls()) # Clean variable
 memory.limit(150000)
