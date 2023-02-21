@@ -105,7 +105,9 @@ ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = Set_Target_geneset2[1], y 
 
 
 ##### Plot Heatmap #####
+## Heatmap in R: Static and Interactive Visualization
 ## Ref: https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/#:~:text=35%20mins-,Hierarchical%20Clustering%20in%20R%3A%20The%20Essentials,clusters%20of%20samples%20and%20features.
+## Ref(ComplexHeatmap): https://jokergoo.github.io/ComplexHeatmap-reference/book/
 
 library(ComplexHeatmap)
 Heatmap(COR_Rvalue.df,
@@ -125,4 +127,4 @@ Heatmap(COR_Rvalue.df,
 
 
 #### Save RData ####
-
+save.image(paste0(Result_Folder_Name,"/",Result_Folder_Name,".RData"))
