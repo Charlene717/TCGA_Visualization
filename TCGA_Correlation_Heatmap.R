@@ -116,8 +116,8 @@ ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = Set_Target_geneset2[1], y 
 ## Apply function
 
 
-
-##### Plot Heatmap #####
+##### Visualization #####
+#### Plot Heatmap ####
 ## Heatmap in R: Static and Interactive Visualization
 ## Ref: https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/#:~:text=35%20mins-,Hierarchical%20Clustering%20in%20R%3A%20The%20Essentials,clusters%20of%20samples%20and%20features.
 ## Ref(ComplexHeatmap): https://jokergoo.github.io/ComplexHeatmap-reference/book/
@@ -143,6 +143,36 @@ Heatmap(COR_Rvalue.df,
 
 Plt.Heatmap_NonClu
 
+#### Correlation plot ####
+## Ref: https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
+
+#### Dot plot ####
+## By ChatGPT: https://openai.com/blog/chatgpt/
+library(ggplot2)
+
+# 將P值的dataframe轉換成長格式，並為每一列增加一個列名稱
+# P_df_long <- reshape2::melt(COR_Pvalue.df, varnames = c("row", "col"), value.name = "P")
+P_df_long <- reshape2::melt(data.frame(Gene= rownames(COR_Pvalue.df),COR_Pvalue.df),
+                            varnames = c("row", "col"), value.name = "P")
+
+colnames(P_df_long)[1:2] <-c("Gene1","Gene2")
+
+# 將R值的dataframe轉換成長格式，並為每一列增加一個列名稱
+# R_df_long <- reshape2::melt(COR_Rvalue.df, varnames = c("row", "col"), value.name = "R")
+R_df_long <- reshape2::melt(data.frame(Gene= rownames(COR_Rvalue.df),COR_Rvalue.df),
+                            varnames = c("row", "col"), value.name = "R")
+
+colnames(R_df_long)[1:2] <-c("Gene1","Gene2")
+
+# 合併P值和R值的dataframe
+df <- merge(P_df_long, R_df_long)
+
+# 繪製氣泡圖
+ggplot(df, aes(x = Gene1, y = Gene2, size = P, fill = R)) +
+  geom_point(shape = 21) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  scale_size_continuous(range = c(2, 10)) +
+  labs(title = "Bubble Plot", x = "Column", y = "Row", size = "P value", fill = "R value")
 
 
 #### Export Result ####
