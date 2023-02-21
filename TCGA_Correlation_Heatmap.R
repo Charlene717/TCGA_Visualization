@@ -9,6 +9,10 @@ PKG_BiocManager.set <- c("ComplexHeatmap")
 
 FUN_Package_InstLoad(Basic.set = PKG_Basic.set, BiocManager.set = PKG_BiocManager.set)
 
+if(!require(devtools)) install.packages("devtools")
+if(!require(ggpubr)) devtools::install_github("kassambara/ggpubr")
+library("ggpubr")
+
 ##### Function setting #####
 source("FUN_Beautify_ggplot.R")
 source("FUN_ggPlot_vline.R")
@@ -45,13 +49,46 @@ Pheno.df <- read.delim(paste0(SetImportPath_FOL,"/",SetImport_PhenoFileName), he
 
 
 ##### Data preprocessing #####
-
+## Extract Primary tumor
 
 
 
 ##### Correlation analysis #####
+## Ref: http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+## Ref: https://www.scribbr.com/statistics/pearson-correlation-coefficient/#:~:text=Revised%20on%20December%205%2C%202022,the%20relationship%20between%20two%20variables.
 
 
+## For loop
+COR_Rvalue.df <- as.data.frame(matrix(data = NA, ncol = length(Set_Target_geneset1), nrow = length(Set_Target_geneset2)))
+colnames(COR_Rvalue.df) <- Set_Target_geneset1
+row.names(COR_Rvalue.df) <- Set_Target_geneset2
+
+COR_Pvalue.df <- COR_Rvalue.df
+
+## Test Correlation analysis
+library("ggpubr")
+Test <- cor.test(GeneExp.df[1,] %>% as.numeric(), GeneExp.df[2,]%>% as.numeric(), method = c("pearson"))
+Test_RValue <- Test[["estimate"]][["cor"]]
+Test_PValue <- Test[["p.value"]]
+
+
+ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = row.names(GeneExp.df)[1], y = row.names(GeneExp.df)[2],
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = row.names(GeneExp.df)[1], ylab = row.names(GeneExp.df)[2])
+
+
+for (i in 1:length(Set_Target_geneset1)) {
+  for (j in 1:length(Set_Target_geneset2)) {
+
+
+  }
+
+}
+
+
+
+## Apply function
 
 
 
