@@ -152,8 +152,9 @@ library(ggplot2)
 
 # 將P值的dataframe轉換成長格式，並為每一列增加一個列名稱
 # P_df_long <- reshape2::melt(COR_Pvalue.df, varnames = c("row", "col"), value.name = "P")
-P_df_long <- reshape2::melt(data.frame(Gene= rownames(COR_Pvalue.df),COR_Pvalue.df),
-                            varnames = c("row", "col"), value.name = "P")
+
+P_df_long <- reshape2::melt(data.frame(Gene= rownames(COR_Pvalue.df),-log10(COR_Pvalue.df)) ,
+                            varnames = c("row", "col"), value.name = "log10P")
 
 colnames(P_df_long)[1:2] <-c("Gene1","Gene2")
 
@@ -167,13 +168,19 @@ colnames(R_df_long)[1:2] <-c("Gene1","Gene2")
 # 合併P值和R值的dataframe
 df <- merge(P_df_long, R_df_long)
 
+df$R <- df$R %>% as.numeric()
 # 繪製氣泡圖
-ggplot(df, aes(x = Gene1, y = Gene2, size = P, fill = R)) +
+ggplot(df, aes(x = Gene1, y = Gene2, size = log10P, fill = R)) +
   geom_point(shape = 21) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  scale_fill_gradientn(colours = c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"),
+                       #values = c(-1,-0.5, 0, 0.5, 1),
+                       limits = c(-1, 1)) +
   scale_size_continuous(range = c(2, 10)) +
-  labs(title = "Bubble Plot", x = "Column", y = "Row", size = "P value", fill = "R value")
+  labs(size = "-log10Pvalue", fill = "R value") -> Plt.Dot
+  # labs(title = "Bubble Plot", x = "Column", y = "Row", size = "P value", fill = "R value")
+Plt.Dot
 
+Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"))
 
 #### Export Result ####
 ## PDF
