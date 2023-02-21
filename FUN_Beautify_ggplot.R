@@ -1,4 +1,4 @@
-FUN_BeautifyggPlot = function( P1,
+FUN_Beautify_ggPlot = function( P1,
                                LegPos = c(0.75, 0.15),LegBox = "vertical",LegDir="vertical",
                                LegTitleSize=15 ,LegTextSize = 12,
                                TH= 0.05,TV= -10, TitleSize = 20,

@@ -102,7 +102,7 @@ Plt.Barplot
 table(as.factor(Pheno.df[,"sample_type"]))
 
 Plt.Barplot + labs(fill="sample_type", x="sample_type", y = "count")+
-  theme_classic() %>% FUN_BeautifyggPlot(AxisTitleSize=2,LegPos = c(0.82, 0.85), OL_Thick = 1.5)+
+  theme_classic() %>% FUN_Beautify_ggPlot(AxisTitleSize=2,LegPos = c(0.82, 0.85), OL_Thick = 1.5)+
   theme(axis.text.x = element_text(angle = 0, hjust = 0.65, vjust = 0.7),) -> Plt.Barplot1
 Plt.Barplot1
 
