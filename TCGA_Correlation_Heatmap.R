@@ -105,6 +105,14 @@ ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = Set_Target_geneset2[1], y 
 
 
 ##### Plot Heatmap #####
+## Ref: https://www.datanovia.com/en/lessons/heatmap-in-r-static-and-interactive-visualization/#:~:text=35%20mins-,Hierarchical%20Clustering%20in%20R%3A%20The%20Essentials,clusters%20of%20samples%20and%20features.
+
+library(ComplexHeatmap)
+Heatmap(COR_Rvalue.df,
+        name = "Correlation", #title of legend
+        column_title = "Variables", row_title = "Samples",
+        # row_names_gp = gpar(fontsize = 7) # Text size for row names
+)
 
 
 
