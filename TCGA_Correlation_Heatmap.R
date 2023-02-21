@@ -32,6 +32,14 @@ Set_Target_geneset1 <- c("FN1", "MTDH", "CDH17", "VTN", "SPP1", "FGA", "FGB", "F
                          "LAMB1-B4", "LAMB1", "LAMB2", "LAMB3", "LAMB4",
                          "LAMC1-C3", "LAMC1", "LAMC2", "LAMC3", "AATK"
                          )
+## RGD
+Set_Target_geneset1 <- c("FN1", "MTDH", "CDH17", "VTN", "SPP1", "FGA", "FGB", "FGG", "AATK")
+## collagen
+Set_Target_geneset1 <- c("COL1A1", "COL1A2",
+                         "COL4A1-A6", "COL4A1", "COL4A2", "COL4A3", "COL4A4", "COL4A5", "COL4A6",
+                         "COL5A1", "COL5A2", "COL5A3", "AATK")
+
+
 Set_Target_geneset1 <- alias2Symbol(Set_Target_geneset1, species = "Hs", expand.symbols = FALSE)
 
 
@@ -40,6 +48,13 @@ Set_Target_geneset2 <- c("ITGA5", "ITGAV", "ITGA8", "ITGB1", "ITGB3", "ITGB5", "
                          "ITGA1", "ITGA2", "ITGA10", "ITGA11",
                          "ITGA9", "ITGA4", "ITGB7", "ITGAE", "ITGAM", "ITGB2", "ITGAL", "ITGAD", "ITGAX",
                          "ITGA3", "ITGA6", "ITGA7", "ITGB4")
+## RGD
+Set_Target_geneset2 <- c("ITGA5", "ITGAV", "ITGA8", "ITGB1", "ITGB3", "ITGB5", "ITGB6", "ITGB8", "ITGA2B")
+## collagen
+Set_Target_geneset2 <- c("ITGA1", "ITGA2", "ITGA10", "ITGA11")
+
+
+
 Set_Target_geneset2 <- alias2Symbol(Set_Target_geneset2, species = "Hs", expand.symbols = FALSE)
 
 Set_col_Range  <- c(-1,-0.5, 0, 0.5,1)
@@ -50,7 +65,7 @@ Set_col_fun = colorRamp2(Set_col_Range, Set_col)
 ##### Export setting* #####
 Set_Export_Name1 <- "TCGA"
 Set_Export_Name2 <- "PAAD"
-Set_Export_Name3 <- "PT_Grp1"
+Set_Export_Name3 <- "PT_collagen"
 
 Result_Folder_Name <- paste0("Result_",Sys.Date(),"_",Set_Export_Name1,"_",Set_Export_Name2,"_",Set_Export_Name3) ## Generate output folder automatically
 dir.create(Result_Folder_Name)
@@ -215,7 +230,7 @@ dev.off()
 
 pdf(
   file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_DotPlot.pdf"),
-  width = 12,  height = 10
+  width = 6,  height = 5
 )
 Plt.Dot+labs(x=NULL, y=NULL)
 Plt.Barplot1
