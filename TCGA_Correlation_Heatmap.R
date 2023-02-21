@@ -28,11 +28,13 @@ SetImport_PhenoFileName <- "TCGA.PAAD.sampleMap_PAAD_clinicalMatrix"
 ##### Conditions setting* #####
 Set_Target_geneset1 <- c("ARHGEF10L","RNF10","RNF11","RNF13","GTF2IP1","REM1","TSKS","ASS1")
 Set_Target_geneset2 <- c("NCBP2","DISC1","RNF115","RNF112","SPN","DHX8","TCOF1","LRRTM3","NUP98")
+Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"))
+
 
 ##### Export setting* #####
 Set_Export_Name1 <- "TCGA"
 Set_Export_Name2 <- "PAAD"
-Set_Export_Name3 <- "Test"
+Set_Export_Name3 <- "PT"
 
 Result_Folder_Name <- paste0("Result_",Sys.Date(),"_",Set_Export_Name1,"_",Set_Export_Name2,"_",Set_Export_Name3) ## Generate output folder automatically
 dir.create(Result_Folder_Name)
@@ -113,11 +115,24 @@ ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = Set_Target_geneset2[1], y 
 library(ComplexHeatmap)
 Heatmap(COR_Rvalue.df,
         name = "Correlation", #title of legend
-        column_title = "Variables", row_title = "Samples",
+        # column_title = "Variables", row_title = "Samples",
+        col = Set_col_fun,
         # row_names_gp = gpar(fontsize = 7) # Text size for row names
 ) -> Plt.Heatmap
 
 Plt.Heatmap
+
+Heatmap(COR_Rvalue.df,
+        name = "Correlation", #title of legend
+        # column_title = "Variables", row_title = "Samples",
+        col = Set_col_fun,
+        cluster_rows = FALSE,
+        cluster_columns = FALSE
+        # row_names_gp = gpar(fontsize = 7) # Text size for row names
+) -> Plt.Heatmap_NonClu
+
+Plt.Heatmap_NonClu
+
 
 
 #### Export Result ####
@@ -126,6 +141,7 @@ pdf(
   file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_Heatmap.pdf"),
   width = 10,  height = 8
 )
+Plt.Heatmap_NonClu
 Plt.Heatmap
 dev.off()
 
