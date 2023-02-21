@@ -42,8 +42,9 @@ Set_Target_geneset2 <- c("ITGA5", "ITGAV", "ITGA8", "ITGB1", "ITGB3", "ITGB5", "
                          "ITGA3", "ITGA6", "ITGA7", "ITGB4")
 Set_Target_geneset2 <- alias2Symbol(Set_Target_geneset2, species = "Hs", expand.symbols = FALSE)
 
-
-Set_col_fun = colorRamp2(c(-1,-0.5, 0, 0.5,1), c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"))
+Set_col_Range  <- c(-1,-0.5, 0, 0.5,1)
+Set_col  <- c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653")
+Set_col_fun = colorRamp2(Set_col_Range, Set_col)
 
 
 ##### Export setting* #####
@@ -191,8 +192,8 @@ df$Gene2  <- factor(df$Gene2, levels=Set_Target_geneset1)
 # 繪製氣泡圖
 ggplot(df, aes(x = Gene2, y = Gene1, size = log10P, fill = R)) +
   geom_point(shape = 21) +
-  scale_fill_gradientn(colours = c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"),
-                       #values = c(-1,-0.5, 0, 0.5, 1),
+  scale_fill_gradientn(colours = Set_col, # c("#1f5294", "#366cb3", "white", "#c44d75", "#ad2653"),
+                       #values = c(-1,-0.5, 0, 0.5, 1), # values = Set_col_Range
                        limits = c(-1, 1)) +
   scale_size_continuous(range = c(2, 10)) +
   labs(size = "-log10Pvalue", fill = "R value")+
