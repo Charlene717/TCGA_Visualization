@@ -51,6 +51,16 @@ Pheno.df <- read.delim(paste0(SetImportPath_FOL,"/",SetImport_PhenoFileName), he
 
 
 ##### Data preprocessing #####
+
+Plt.Barplot <- ggplot(Pheno.df, aes(x=as.factor(Pheno.df[,"sample_type"]), fill=as.factor(Pheno.df[,"sample_type"]))) + geom_bar()
+Plt.Barplot
+
+Plt.Barplot + labs(fill="sample_type", x="sample_type", y = "count")+
+  theme_classic() %>% FUN_BeautifyggPlot(AxisTitleSize=2,LegPos = c(0.82, 0.85))+
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.65, vjust = 0.7)) -> Plt.Barplot1
+Plt.Barplot1
+
+
 ## Extract Primary tumor
 PT.set <- Pheno.df[Pheno.df$sample_type == "Primary Tumor" ,]$sampleID
 GeneExp_Ori.df <- GeneExp.df
@@ -139,10 +149,11 @@ Plt.Heatmap_NonClu
 ## PDF
 pdf(
   file = paste0(Result_Folder_Name,"/",Result_Folder_Name,"_Heatmap.pdf"),
-  width = 10,  height = 8
+  width = 12,  height = 10
 )
 Plt.Heatmap_NonClu
 Plt.Heatmap
+Plt.Barplot1
 dev.off()
 
 
