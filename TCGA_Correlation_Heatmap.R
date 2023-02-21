@@ -78,9 +78,13 @@ ggscatter(GeneExp.df %>% t() %>% as.data.frame(), x = row.names(GeneExp.df)[1], 
           xlab = row.names(GeneExp.df)[1], ylab = row.names(GeneExp.df)[2])
 
 
-for (i in 1:length(Set_Target_geneset1)) {
-  for (j in 1:length(Set_Target_geneset2)) {
+for (j in 1:length(Set_Target_geneset2)) {
+  for (i in 1:length(Set_Target_geneset1)) {
+    Temp <- cor.test(GeneExp.df[j,] %>% as.numeric(), GeneExp.df[i,]%>% as.numeric(), method = c("pearson"))
 
+    COR_Rvalue.df[j,i] <- Temp[["estimate"]][["cor"]]
+    COR_Pvalue.df[j,i] <- Temp[["p.value"]]
+    rm(Temp)
 
   }
 
